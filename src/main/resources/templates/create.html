@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" th:href="@{style.css}">
+    <link th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<style>
+    body {margin:0;}
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #FEB833;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: black;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #FEE733;
+    }
+
+    .active {
+        background-color: #FEE733;
+    }
+</style>
+
+<ul>
+    <li><a class="active" href="/">Home</a></li>
+    <li><a href="/create">Create New Movie</a></li>
+    <li><a href="/createUser">Create New User</a></li>
+    <li><a href="/edit">Edit</a></li>
+    <li><a href="/rate">Rate</a> </li>
+    <li><form th:action="@{/search}" method="post" style="margin: auto; max-width: 500px">
+        <input type="text" placeholder="Search GMDB" name="searchKey"/>
+        <input class="btn btn-success" type="submit" value="search" th:href="'search/'"/>
+    </form>
+    </li>
+    <li style="float:right"> <a href="#" id="button" class="button">LOGIN</a> </li>
+</ul>
+
+<div class="bg-modal">
+    <div class="modal-content">
+        <div class="close">+</div>
+        <img class="profilePic" src="../profilePic.png">
+        <form method="post" th:action="@{/login}">
+            <input type="text" placeholder="Username" th:field="${tmpLogin.tmpUsername}"/>
+            <input type="password" placeholder="Password" th:field="${tmpLogin.tmpPassword}"/>
+            <div></div>
+            <input class="btn btn-success" type="submit" value="LOGIN"/>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Create new Movie</h2>
+    <form method="Post" th:action="@{/create}">
+        <div>Movie Title</div>
+        <input type="text" th:field="${movie.title}"/>
+        <div>Movie Year</div>
+        <input type="text" th:field="${movie.releaseYear}"/>
+        <div>Movie genre</div>
+        <input type="text" th:field="${movie.genre}"/>
+        <div>Movie Director</div>
+        <input type="text" th:field="${movie.director}"/>
+        <div>Rating</div>
+        <input type="text" th:field="${movie.rating}"/>
+        <input class="btn btn-primary btn-danger" type="submit" value="Create"/>
+    </form>
+</div>
+
+<script th:src="@{/webjars/jquery/3.1.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0/bootstrap.js}"></script>
+<script>
+    document.getElementById('button').addEventListener('click', function() {
+        document.querySelector(".bg-modal").style.display = "flex";
+    })
+</script>
+<script>
+    document.querySelector('.close').addEventListener('click', function() {
+        document.querySelector(".bg-modal").style.display = "none";
+    })
+</script>
+</body>
+</html>

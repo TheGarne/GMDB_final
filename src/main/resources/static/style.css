@@ -1,0 +1,52 @@
+.profilePic{
+    width: 200px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.bg-modal{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.modal-content {
+    width: 350px !important;
+    height: 375px !important;
+    background-color: white;
+    border-radius: 4px;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+
+}
+
+.input {
+    width: 50%;
+    display: block !important;
+    margin: 15px auto;
+    padding: 8px;
+    border: 1px solid gray;
+}
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 14px;
+    font-size: 60px;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.container {
+    width: 1024px;
+    margin: 0 auto;
+}

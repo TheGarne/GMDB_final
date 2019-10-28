@@ -1,0 +1,55 @@
+DROP DATABASE IF EXISTS ap;
+CREATE DATABASE IF NOT EXISTS ap;
+SET GLOBAL time_zone = '+2:00';
+USE ap;
+
+CREATE USER IF NOT EXISTS 'viewonly'@'localhost' IDENTIFIED BY 'viewonly';
+GRANT select, create ON ap.movies TO  'viewonly'@'localhost';
+GRANT select, create ON ap.movieratings TO  'viewonly'@'localhost';
+
+CREATE TABLE IF NOT EXISTS movies(
+    movie_id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    title VARCHAR(50) NOT NULL,
+    releaseYear int,
+    genre VARCHAR(30),
+    director VARCHAR(100)
+);
+INSERT INTO movies(title, releaseYear, genre, director) VALUES
+('The Dark Knight', 2008, 'Action', 'Christopher Nolan'),
+('Joker', 2019, 'Thriller', 'Todd Phillips'),
+('Atila: Battle Angel', 2019, 'Action', 'Robert Rodriguez'),
+('Spider-man: Into the Spider-Verse', 2018, 'Animation', 'Bob Persichetti'),
+('TestMovie', 1995, 'Drama', 'Mr. Smith');
+
+CREATE TABLE IF NOT EXISTS accounts(
+    user_id int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    userName VARCHAR(40) UNIQUE NOT NULL,
+    userPassword VARCHAR(40) NOT NULL
+);
+
+INSERT INTO accounts(userName, userPassword) VALUES
+('admin', 'admin'),
+('user', 'user');
+
+CREATE TABLE IF NOT EXISTS roles(
+    user_id int NOT NULL,
+    role int NOT NULL,
+    CONSTRAINT roles_fk_accounts FOREIGN KEY (user_id) REFERENCES accounts (user_id)
+);
+INSERT INTO roles(user_id, role) VALUES (1, 3), (2, 2);
+
+CREATE TABLE IF NOT EXISTS movieRatings(
+    user_id int NOT NULL,
+    movie_id int NOT NULL,
+    ratings double NOT NULL,
+    CONSTRAINT movieRatings_fk_accounts FOREIGN KEY (user_id) REFERENCES accounts (user_id) ON DELETE CASCADE,
+    CONSTRAINT movieRatings_fk_movies FOREIGN KEY (movie_id) REFERENCES movies (movie_id) ON DELETE CASCADE
+);
+
+INSERT INTO movieRatings (user_id, movie_id, ratings) VALUES (1, 1, 7.54), (1,2,9.21), (1,3,10), (1,4,8.1), (2,1,8.5), (2,2,9.4), (2,3,8.2), (2,4,8.4), (1,5, 3.4), (2,5,7.5);
+
+SELECT * FROM movies ;
+SELECT * FROM accounts;
+SELECT * FROM roles;
+SELECT * FROM movieRatings;
+SELECT movies.movie_id, title, releaseYear, genre, director, FORMAT(AVG(ratings), 2) AS rating FROM movies JOIN movieRatings mR on movies.movie_id = mR.movie_id GROUP BY mR.movie_id;
